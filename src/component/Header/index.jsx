@@ -31,7 +31,7 @@ const Header = ({ clicked, index }) => {
       sx={{
         backgroundImage: "url(./images/header.png)",
         backgroundSize: "cover",
-        minHeight: { xs: "70vh", md: "60vh" },
+        minHeight: { xs: "50vh", md: "40vh" },
         padding: "10%",
       }}
     >
