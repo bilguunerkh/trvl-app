@@ -10,6 +10,9 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import axios from "axios";
 
 const SignUp = (props) => {
   const handleSubmit = (event) => {
@@ -17,12 +20,21 @@ const SignUp = (props) => {
   };
 
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
+  const [message, setMessage] = useState();
+  const [alert, setAlert] = useState("");
+  const [status, setStatus] = useState("error");
 
   const changeEmail = (e) => {
     console.log("Email", e.target.value);
     setEmail(e.target.value);
+  };
+
+  const changeName = (e) => {
+    console.log("Name", e.target.value);
+    setName(e.target.value);
   };
 
   const changePassword = (e) => {
@@ -35,8 +47,40 @@ const SignUp = (props) => {
     setRePassword(e.target.value);
   };
 
+  const signupo = async () => {
+    if (!email || !name || !password || !rePassword) {
+      setMessage("Medeeliig buren boglono uu!");
+      setAlert(true);
+      return;
+    }
+    if (password !== rePassword) {
+      setMessage("Nuuts ug hoorondoo taarahgui baina");
+      setAlert(true);
+      return;
+    }
+    try {
+      const res = await axios.post("http://localhost:8030/signup", {
+        name,
+        email,
+        password,
+      });
+      setStatus("succes");
+      setMessage(res.data.message);
+      setAlert(true);
+      props.seto(true);
+    } catch (error) {
+      setStatus("error");
+      setAlert(true);
+    }
+  };
+
   return (
     <Container component="main" maxWidth="xs">
+      <Snackbar open={alert} autoHideDuration={2000}>
+        <Alert severity={status} sx={{ width: "100%" }}>
+          {message}
+        </Alert>
+      </Snackbar>
       <Box
         sx={{
           marginTop: 8,
@@ -52,6 +96,18 @@ const SignUp = (props) => {
           Sign Up
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="name"
+            label="Username"
+            name="name"
+            autoComplete="name"
+            autoFocus
+            onChange={changeName}
+          />
+
           <TextField
             margin="normal"
             required
@@ -95,6 +151,7 @@ const SignUp = (props) => {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            onClick={signupo}
           >
             Бүртгүүлэх
           </Button>
@@ -111,7 +168,7 @@ const SignUp = (props) => {
                 }}
                 variant="text"
               >
-                Нэвтрэх
+                Бүртгүүлэх
               </Button>
             </Grid>
           </Grid>

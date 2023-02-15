@@ -15,11 +15,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import React, { useState } from "react";
 import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const SignUp = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [toast, setIsToast] = useState(false);
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const onClose = () => {
@@ -35,37 +37,29 @@ const SignUp = (props) => {
     setPassword(e.target.value);
   };
 
+  const signin = async (email, password) => {
+    try {
+      const res = await axios.post("http://localhost:8030/signin", {
+        email,
+        password,
+      });
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+    } catch (error) {
+      setMessage(error.response.data.message);
+    }
+  };
+
   const Login = () => {
-    console.log("Login");
     if (email === "" || password === "") {
       setIsToast(true);
     } else {
-      console.log(email, password);
-      localStorage.setItem("isLogged", true);
-      navigate("/");
-      setIsToast(false);
+      signin(email, password);
     }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
   };
-
-  const handleClick = () => {
-    // console.log("🟩 🟩 🟩")
-    setIsToast(true);
-  };
-
-  const action = (
-    <React.Fragment>
-      <Button color="secondary" size="small">
-        butsah
-      </Button>
-      <IconButton size="small" aria-label="close" color="inherit">
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </React.Fragment>
-  );
 
   return (
     <Container component="main" maxWidth="xs">

@@ -96,6 +96,8 @@ function DrawerAppBar(props) {
                     borderBottom: i === index ? "1px white solid" : "none",
                     borderRadius: "0",
                     "&:hover": { background: "none" },
+                    color: "white",
+                    fontWeight: 700,
                   }}
                   key={item}
                   onClick={() => darav(i)}

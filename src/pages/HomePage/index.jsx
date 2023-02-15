@@ -8,6 +8,7 @@ import Plan from "../../component/Plan ";
 import Connect from "../../component/Connect";
 import Iphone from "../../component/Iphone";
 import Navbar from "../../component/Navbar";
+import Footer from "../../component/Footer";
 
 const HomePage = () => {
   return (
@@ -21,6 +22,7 @@ const HomePage = () => {
         <Plan />
         <Connect />
         <Iphone />
+        <Footer />
       </>
     </Box>
   );
